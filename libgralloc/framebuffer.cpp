@@ -43,6 +43,7 @@
 #include <cutils/properties.h>
 #include <profiler.h>
 
+#define USE_ALTERNATE
 #ifndef NO_HW_VSYNC
 #ifndef MSMFB_IOCTL_MAGIC
 #define MSMFB_IOCTL_MAGIC 'm'
@@ -305,7 +306,8 @@ int mapFrameBufferLocked(struct private_module_t* module)
     uint32_t line_length = (info.xres * info.bits_per_pixel / 8);
     info.yres_virtual = (size * numberOfBuffers) / line_length;
 
-/*#ifndef NO_HW_VSYNC
+#ifndef USE_ALTERNATE
+#ifndef NO_HW_VSYNC
     struct msmfb_metadata metadata;
 
     metadata.op = metadata_op_base_blend;
@@ -314,7 +316,8 @@ int mapFrameBufferLocked(struct private_module_t* module)
     if(ioctl(fd, MSMFB_METADATA_SET, &metadata) == -1) {
         ALOGW("MSMFB_METADATA_SET failed to configure alpha mode");
     }
-#endif */
+#endif
+#endif
 
     uint32_t flags = PAGE_FLIP;
 
